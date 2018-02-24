@@ -10,6 +10,7 @@ import static jdk.nashorn.internal.objects.Global.Infinity;
 
 public class IntervaleCalculator2 {
 
+    /* метод считывания и записи в файл с одновременным вычислением ПОСТРОЧНО !*/
     public  void readWrite() throws IOException {
 
         FileReader fr;
@@ -68,7 +69,7 @@ public class IntervaleCalculator2 {
         fr.close();
     }
 
-
+    /* метод добавления скобок для определения приоритета возведения в степень */
     private static String addBrackets(String stringIn){
         String opStack = "";
         String stringOut = "";
@@ -124,7 +125,7 @@ public class IntervaleCalculator2 {
         return  stringOut;
     }
 
-
+    /* метод преобразования входной строки в ОПН с проверкой на унарный плюс и минус*/
     private static String toRevPolNotation(String stringIn) throws Exception {
 
         boolean isSignOperation = false;
@@ -200,7 +201,7 @@ public class IntervaleCalculator2 {
         return  strOut;
     }
 
-
+    /* является ли символ оператором */
     private static boolean isOperation(char c) {
         switch (c) {
             case '-':
@@ -214,7 +215,7 @@ public class IntervaleCalculator2 {
         return false;
     }
 
-
+    /* приоритет операций */
     private static byte operationPrior(char op) {
         switch (op) {
             case '^':
@@ -227,7 +228,7 @@ public class IntervaleCalculator2 {
         return 1;
     }
 
-
+    /* метод для вычислений  */
     public static double calculate(String sIn) throws Exception {
 
         if (sIn == ""){
