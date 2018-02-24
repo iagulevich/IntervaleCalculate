@@ -171,8 +171,7 @@ public class IntervaleCalculator2 {
                         if (strStack.length()>0 || strStack.charAt(strStack.length()-1) == '('){
                             continue;
                         }
-                       /* strOut += " " + strStack.charAt(strStack.length()-1);
-                        strStack = strStack.substring(0, strStack.length()-1);*/
+
                     } else {
                         while ((strStack.charAt(strStack.length()-1) != '(' && strStack.length() > 0) ) {
                             strOut += " " + strStack.charAt(strStack.length()-1);
