@@ -1,6 +1,6 @@
 package ru.intervale.calculator;
 
-import ru.intervale.calculator.file.FileResource;
+import ru.intervale.file.FileResource;
 
 import java.util.List;
 

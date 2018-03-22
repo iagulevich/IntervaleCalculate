@@ -1,4 +1,4 @@
-package ru.intervale.calculator.file;
+package ru.intervale.file;
 
 public class IORuntimeException extends RuntimeException {
 

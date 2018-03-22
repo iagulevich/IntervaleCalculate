@@ -1,4 +1,4 @@
-package ru.intervale.calculator.file;
+package ru.intervale.file;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
