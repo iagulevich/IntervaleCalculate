@@ -6,7 +6,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Stack;
 import java.util.StringTokenizer;
-import static jdk.nashorn.internal.objects.Global.Infinity;
+//import static jdk.nashorn.internal.objects.Global.Infinity;
 
 public class IntervaleCalculator2 {
 
@@ -53,12 +53,12 @@ public class IntervaleCalculator2 {
                 DecimalFormat decimalFormat = new DecimalFormat(formatDouble, decimalFormatSymbols);
                 String format = decimalFormat.format(resCalculate);
 
-                if (resCalculate == Infinity) {
-                    strOut = "Деление на 0!";
-                    fw.write(strOut +"\n");
-                } else {
+//                if (resCalculate == Infinity) {
+//                    strOut = "Деление на 0!";
+//                    fw.write(strOut +"\n");
+//                } else {
                     fw.write(strOut + "=" + format + "\n");
-                }
+//                }
                 fw.flush();
             } catch (Exception e) {
                 fw.write(e.getMessage() + "\n");
