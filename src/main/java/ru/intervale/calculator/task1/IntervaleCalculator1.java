@@ -1,4 +1,4 @@
-package task_1.java;
+package ru.intervale.calculator.task1;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -6,7 +6,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Stack;
 import java.util.StringTokenizer;
-import static jdk.nashorn.internal.objects.Global.Infinity;
+//import static jdk.nashorn.internal.objects.Global.Infinity;
 
 public class IntervaleCalculator1 {
 
@@ -15,7 +15,7 @@ public class IntervaleCalculator1 {
         FileReader fr;
 
         try {
-            fr = new FileReader("src/task_1/resources/input_1.txt");
+            fr = new FileReader("src\\main\\resources\\input_1.txt");
         } catch (FileNotFoundException e) {
             throw  new FileNotFoundException("Файл не найден!");
         }
@@ -24,7 +24,7 @@ public class IntervaleCalculator1 {
         String strIn, strOut;
         double resCalculate = 0;
 
-        File file = new File("src/task_1/resources/output_1.txt");
+        File file = new File("src\\main\\resources\\output_1.txt");
         FileWriter fw ;
 
         try {
@@ -52,12 +52,12 @@ public class IntervaleCalculator1 {
                 DecimalFormat decimalFormat = new DecimalFormat(formatDouble, decimalFormatSymbols);
                 String format = decimalFormat.format(resCalculate);
 
-                if (resCalculate == Infinity) {
-                    strOut = "Деление на 0!";
-                    fw.write(strOut +"\n");
-                } else {
+//                if (resCalculate == Infinity) {
+//                    strOut = "Деление на 0!";
+//                    fw.write(strOut +"\n");
+//                } else {
                     fw.write(strOut + "=" + format + "\n");
-                }
+//                }
                 fw.flush();
             } catch (Exception e) {
                 fw.write(e.getMessage() + "\n");

@@ -1,4 +1,4 @@
-package task_2.java;
+package ru.intervale.calculator.task2;
 
 public class Main {
 

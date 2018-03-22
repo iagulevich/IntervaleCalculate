@@ -1,4 +1,4 @@
-package task_1.java;
+package ru.intervale.calculator.task1;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package task_2.java;
+package ru.intervale.calculator.task2;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -16,7 +16,7 @@ public class IntervaleCalculator2 {
         FileReader fr;
 
         try {
-            fr = new FileReader("src/task_2/resources/input_2.txt");
+            fr = new FileReader("src\\main\\resources\\input_2.txt");
         } catch (FileNotFoundException e) {
             throw  new FileNotFoundException("Файл не найден!");
         }
@@ -28,7 +28,7 @@ public class IntervaleCalculator2 {
         FileWriter fw ;
 
         try {
-            fw = new FileWriter("src/task_2/resources/output_2.txt");
+            fw = new FileWriter("src\\main\\resources\\output_2.txt");
         } catch (IOException e) {
             throw  new IOException("Ошибка записи в файл!");
         }
