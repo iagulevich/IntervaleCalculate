@@ -1,7 +1,5 @@
 package ru.intervale.calculator.impl;
 
-import ru.intervale.calculator.Calculator;
-import ru.intervale.calculator.MultiCalculator;
 import ru.intervale.calculator.dto.Result;
 
 import java.util.ArrayList;
@@ -9,17 +7,15 @@ import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-public class SimpleCalculator implements Calculator, MultiCalculator {
-
-
+public class SimpleCalculator extends BaseCalculator {
 
     @Override
-    public Result calculate(String input) {
+    public Result calculate(String expression) {
 
-        if (input.isEmpty()) {
-            return new Result(input, "Строка пуста!");
+        if (expression.isEmpty()) {
+            return new Result(expression, "Строка пуста!");
         }
-        String sIn = revPolNotation(input);
+        String sIn = revPolNotation(expression);
 
         double d1 = 0, d2 = 0;
         String strTmp;
@@ -31,7 +27,7 @@ public class SimpleCalculator implements Calculator, MultiCalculator {
                 strTmp = strToken.nextToken().trim();
                 if (1 == strTmp.length() && isOperation(strTmp.charAt(0))) {
                     if (stack.size() < 2) {
-                        return new Result(input, "Неверное количество данных в стеке для операции " + strTmp);
+                        return new Result(expression, "Неверное количество данных в стеке для операции " + strTmp);
                     }
 
                     d1 = stack.pop();
@@ -64,14 +60,21 @@ public class SimpleCalculator implements Calculator, MultiCalculator {
                 }
 
             } catch (Exception e) {
-                return new Result(input, "Недопустимый символ в выражении!");
+                return new Result(expression, "Недопустимый символ в выражении!");
             }
         }
 
         if (stack.size() > 1) {
-            return new Result(input, "Количество операторов не соответствует количеству операндов!");
+            return new Result(expression, "Количество операторов не соответствует количеству операндов!");
         }
-        return new Result(input, stack.pop());
+        return new Result(expression, stack.pop());
+    }
+
+    @Override
+    public List<Result> calculate(List<String> expressions) {
+        final List<Result> results = new ArrayList<>(expressions.size());
+        expressions.forEach(s -> results.add(calculate(s)));
+        return results;
     }
 
     private String revPolNotation(String stringIn) {
@@ -111,23 +114,5 @@ public class SimpleCalculator implements Calculator, MultiCalculator {
         return strOut;
     }
 
-    private static boolean isOperation(char c) {
-        switch (c) {
-            case '-':
-            case '+':
-            case '*':
-            case '/':
-            case '^':
-            case '%':
-                return true;
-        }
-        return false;
-    }
 
-    @Override
-    public List<Result> calculate(List<String> expressions) {
-        final List<Result> results = new ArrayList<>(expressions.size());
-        expressions.forEach(s -> results.add(calculate(s)));
-        return results;
-    }
 }
