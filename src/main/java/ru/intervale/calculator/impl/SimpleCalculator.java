@@ -1,12 +1,78 @@
 package ru.intervale.calculator.impl;
 
 import ru.intervale.calculator.Calculator;
+import ru.intervale.calculator.MultiCalculator;
 import ru.intervale.calculator.dto.Result;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-public class SimpleCalculator implements Calculator {
+public class SimpleCalculator implements Calculator, MultiCalculator {
+
+
+
+    @Override
+    public Result calculate(String input) {
+
+        if (input.isEmpty()) {
+            return new Result(input, "Строка пуста!");
+        }
+        String sIn = revPolNotation(input);
+
+        double d1 = 0, d2 = 0;
+        String strTmp;
+        Stack<Double> stack = new Stack<>();
+        StringTokenizer strToken = new StringTokenizer(sIn);
+
+        while (strToken.hasMoreTokens()) {
+            try {
+                strTmp = strToken.nextToken().trim();
+                if (1 == strTmp.length() && isOperation(strTmp.charAt(0))) {
+                    if (stack.size() < 2) {
+                        return new Result(input, "Неверное количество данных в стеке для операции " + strTmp);
+                    }
+
+                    d1 = stack.pop();
+                    d2 = stack.pop();
+
+                    switch (strTmp.charAt(0)) {
+                        case '+':
+                            d1 += d2;
+                            break;
+                        case '-':
+                            d1 = d2 - d1;
+                            break;
+                        case '/':
+                            d1 = d2 / d1;
+                            break;
+                        case '*':
+                            d1 *= d2;
+                            break;
+                        case '%':
+                            d1 *= d2 / 100;
+                            break;
+                        case '^':
+                            d1 = Math.pow(d2, d1);
+                            break;
+                    }
+                    stack.push(d1);
+                } else {
+                    d1 = Double.parseDouble(strTmp);
+                    stack.push(d1);
+                }
+
+            } catch (Exception e) {
+                return new Result(input, "Недопустимый символ в выражении!");
+            }
+        }
+
+        if (stack.size() > 1) {
+            return new Result(input, "Количество операторов не соответствует количеству операндов!");
+        }
+        return new Result(input, stack.pop());
+    }
 
     private String revPolNotation(String stringIn) {
 
@@ -59,63 +125,9 @@ public class SimpleCalculator implements Calculator {
     }
 
     @Override
-    public Result calculate(String input) {
-
-        if (input.isEmpty()) {
-            return new Result(input, "Строка пуста!");
-        }
-        String sIn = revPolNotation(input);
-        int forPercent = 100;
-        double d1 = 0, d2 = 0;
-        String strTmp;
-        Stack<Double> stack = new Stack<>();
-        StringTokenizer strToken = new StringTokenizer(sIn);
-
-        while (strToken.hasMoreTokens()) {
-            try {
-                strTmp = strToken.nextToken().trim();
-                if (1 == strTmp.length() && isOperation(strTmp.charAt(0))) {
-                    if (stack.size() < 2) {
-                        return new Result(input, "Неверное количество данных в стеке для операции " + strTmp);
-                    }
-
-                    d1 = stack.pop();
-                    d2 = stack.pop();
-
-                    switch (strTmp.charAt(0)) {
-                        case '+':
-                            d1 += d2;
-                            break;
-                        case '-':
-                            d1 = d2 - d1;
-                            break;
-                        case '/':
-                            d1 = d2 / d1;
-                            break;
-                        case '*':
-                            d1 *= d2;
-                            break;
-                        case '%':
-                            d1 *= d2 / forPercent;
-                            break;
-                        case '^':
-                            d1 = Math.pow(d2, d1);
-                            break;
-                    }
-                    stack.push(d1);
-                } else {
-                    d1 = Double.parseDouble(strTmp);
-                    stack.push(d1);
-                }
-
-            } catch (Exception e) {
-                return new Result(input, "Недопустимый символ в выражении!");
-            }
-        }
-
-        if (stack.size() > 1) {
-            return new Result(input, "Количество операторов не соответствует количеству операндов!");
-        }
-        return new Result(input, stack.pop());
+    public List<Result> calculate(List<String> expressions) {
+        final List<Result> results = new ArrayList<>(expressions.size());
+        expressions.forEach(s -> results.add(calculate(s)));
+        return results;
     }
 }
