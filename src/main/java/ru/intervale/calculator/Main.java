@@ -1,7 +1,7 @@
 package ru.intervale.calculator;
 
 import ru.intervale.calculator.dto.Result;
-import ru.intervale.calculator.task1.IntervaleCalculator1;
+import ru.intervale.calculator.impl.SimpleCalculator;
 import ru.intervale.dao.Reader;
 import ru.intervale.dao.Writer;
 import ru.intervale.dao.file.FileDAO;
@@ -15,9 +15,10 @@ public class Main {
         Reader input = new FileDAO("input_1.txt");
         final List<String> inputList = input.toList();
 
-        IntervaleCalculator1 calculator = new IntervaleCalculator1();
+        Calculator calculator = new SimpleCalculator();
 
         final List<String> outputList = input.toList();
+
         Result result;
         for (String strIn : inputList) {
             result = calculator.calculate(strIn);
