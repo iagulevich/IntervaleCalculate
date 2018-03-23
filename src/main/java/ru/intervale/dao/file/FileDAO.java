@@ -1,4 +1,7 @@
-package ru.intervale.file;
+package ru.intervale.dao.file;
+
+import ru.intervale.dao.IORuntimeException;
+import ru.intervale.dao.DAO;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -11,11 +14,11 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FileResource implements FileReader, FileWriter {
+public class FileDAO implements DAO {
 
     private final Path path;
 
-    public FileResource(String fileName) {
+    public FileDAO(String fileName) {
         try {
             this.path = getPath(fileName);
         } catch (URISyntaxException e) {

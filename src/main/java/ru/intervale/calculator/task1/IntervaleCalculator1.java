@@ -1,75 +1,13 @@
 package ru.intervale.calculator.task1;
 
-import java.io.*;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
+import ru.intervale.calculator.dto.Result;
+
 import java.util.Stack;
 import java.util.StringTokenizer;
-//import static jdk.nashorn.internal.objects.Global.Infinity;
 
 public class IntervaleCalculator1 {
 
-    public  void readWrite() throws IOException {
-
-        FileReader fr;
-
-        try {
-            fr = new FileReader("src\\main\\resources\\input_1.txt");
-        } catch (FileNotFoundException e) {
-            throw  new FileNotFoundException("Файл не найден!");
-        }
-
-        BufferedReader br = new BufferedReader(fr);
-        String strIn, strOut;
-        double resCalculate = 0;
-
-        File file = new File("src\\main\\resources\\output_1.txt");
-        FileWriter fw ;
-
-        try {
-            fw = new FileWriter(file);
-        } catch (IOException e) {
-            throw  new IOException("Ошибка записи в файл!");
-        }
-
-        String formatDouble;
-
-        while ( (strIn = br.readLine()) != null ){
-
-            try {
-                strOut = strIn;
-                strIn = revPolNotation(strIn);
-                resCalculate = calculate(strIn);
-                Locale locale = new Locale("en", "UK");
-                DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(locale);
-
-                if (resCalculate%1 == 0) {
-                    formatDouble = "##0";
-                } else {
-                    formatDouble = "##0.00000";
-                }
-                DecimalFormat decimalFormat = new DecimalFormat(formatDouble, decimalFormatSymbols);
-                String format = decimalFormat.format(resCalculate);
-
-//                if (resCalculate == Infinity) {
-//                    strOut = "Деление на 0!";
-//                    fw.write(strOut +"\n");
-//                } else {
-                    fw.write(strOut + "=" + format + "\n");
-//                }
-                fw.flush();
-            } catch (Exception e) {
-                fw.write(e.getMessage() + "\n");
-            }
-        }
-        fw.close();
-        br.close();
-        fr.close();
-    }
-
-
-    private static String revPolNotation(String stringIn) throws Exception {
+    private String revPolNotation(String stringIn) {
 
         String strStack = "";
         String strOut = "";
@@ -99,9 +37,9 @@ public class IntervaleCalculator1 {
                 strOut += charIn;
             }
         }
-        if (strStack.length() >0 ) {
-            strOut += " " + strStack.charAt(strStack.length()-1);
-            strStack.substring(strStack.length()-1);
+        if (strStack.length() > 0) {
+            strOut += " " + strStack.charAt(strStack.length() - 1);
+            strStack.substring(strStack.length() - 1);
         }
         return strOut;
     }
@@ -119,24 +57,24 @@ public class IntervaleCalculator1 {
         return false;
     }
 
-    public static double calculate(String sIn) throws Exception {
+    public Result calculate(String input) {
 
-        if (sIn == ""){
-            throw new Exception("Строка пуста!");
+        if (input.isEmpty()) {
+            return new Result(input, "Строка пуста!");
         }
-
+        String sIn = revPolNotation(input);
         int forPercent = 100;
         double d1 = 0, d2 = 0;
         String strTmp;
-        Stack<Double> stack = new Stack <>();
+        Stack<Double> stack = new Stack<>();
         StringTokenizer strToken = new StringTokenizer(sIn);
 
-        while(strToken.hasMoreTokens()) {
+        while (strToken.hasMoreTokens()) {
             try {
                 strTmp = strToken.nextToken().trim();
                 if (1 == strTmp.length() && isOperation(strTmp.charAt(0))) {
                     if (stack.size() < 2) {
-                        throw new Exception("Неверное количество данных в стеке для операции " + strTmp);
+                        return new Result(input, "Неверное количество данных в стеке для операции " + strTmp);
                     }
 
                     d1 = stack.pop();
@@ -159,7 +97,7 @@ public class IntervaleCalculator1 {
                             d1 *= d2 / forPercent;
                             break;
                         case '^':
-                            d1 = Math.pow(d2,d1);
+                            d1 = Math.pow(d2, d1);
                             break;
                     }
                     stack.push(d1);
@@ -169,14 +107,14 @@ public class IntervaleCalculator1 {
                 }
 
             } catch (Exception e) {
-                throw new Exception("Недопустимый символ в выражении!");
+                return new Result(input, "Недопустимый символ в выражении!");
             }
         }
 
         if (stack.size() > 1) {
-            throw new Exception("Количество операторов не соответствует количеству операндов!");
+            return new Result(input, "Количество операторов не соответствует количеству операндов!");
         }
-        return stack.pop();
+        return new Result(input, stack.pop());
     }
 
 }

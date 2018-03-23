@@ -1,4 +1,4 @@
-package ru.intervale.file;
+package ru.intervale.dao;
 
 public class IORuntimeException extends RuntimeException {
 

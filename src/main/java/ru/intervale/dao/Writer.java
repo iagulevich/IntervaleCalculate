@@ -1,8 +1,8 @@
-package ru.intervale.file;
+package ru.intervale.dao;
 
 import java.util.List;
 
-public interface FileWriter {
+public interface Writer {
 
     void write(List<String> list);
 }

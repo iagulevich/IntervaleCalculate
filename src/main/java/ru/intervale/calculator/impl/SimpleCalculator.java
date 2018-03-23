@@ -1,7 +1,7 @@
-package ru.intervale.calculator.implementation;
+package ru.intervale.calculator.impl;
 
 import ru.intervale.calculator.Calculator;
-import ru.intervale.calculator.Result;
+import ru.intervale.calculator.dto.Result;
 
 public class SimpleCalculator implements Calculator {
 
