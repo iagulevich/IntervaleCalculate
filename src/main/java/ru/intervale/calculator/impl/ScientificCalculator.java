@@ -205,20 +205,4 @@ public class ScientificCalculator extends BaseCalculator {
         return strOut;
     }
 
-
-
-    /* приоритет операций */
-    private static byte operationPrior(char op) {
-        switch (op) {
-            case '^':
-                return 3;
-            case '*':
-            case '/':
-            case '%':
-                return 2;
-        }
-        return 1;
-    }
-
-
 }

@@ -25,4 +25,16 @@ public abstract class BaseCalculator implements MultiCalculator {
         }
         return false;
     }
+
+    protected byte operationPrior(char op) {
+        switch (op) {
+            case '^':
+                return 3;
+            case '*':
+            case '/':
+            case '%':
+                return 2;
+        }
+        return 1;
+    }
 }

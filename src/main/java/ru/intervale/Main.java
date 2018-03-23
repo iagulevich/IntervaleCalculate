@@ -1,5 +1,6 @@
-package ru.intervale.calculator;
+package ru.intervale;
 
+import ru.intervale.calculator.MultiCalculator;
 import ru.intervale.calculator.dto.Result;
 import ru.intervale.calculator.impl.ScientificCalculator;
 import ru.intervale.calculator.impl.SimpleCalculator;
