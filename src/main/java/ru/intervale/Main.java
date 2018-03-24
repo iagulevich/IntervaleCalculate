@@ -11,6 +11,8 @@ import ru.intervale.dao.file.FileDAO;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.lang.System.*;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -31,7 +33,7 @@ public class Main {
 
         final List<String> outputList = results.stream().map(Result::getResult).collect(Collectors.toList());
 
-        System.out.println(outputList);
+        outputList.forEach(out::println);
 
         Writer output = new FileDAO("output_1.txt");
         output.write(outputList);
@@ -47,7 +49,7 @@ public class Main {
 
         final List<String> outputList = results.stream().map(Result::getResult).collect(Collectors.toList());
 
-        System.out.println(outputList);
+        outputList.forEach(out::println);
 
         Writer output = new FileDAO("output_2.txt");
         output.write(outputList);
