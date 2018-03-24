@@ -9,10 +9,9 @@ public enum Operation {
     MUL('*', 2),
     DIV('/', 2),
     PER('%', 2),
-    POW('^', 3),
-    NULL(' ',0);
+    POW('^', 3);
 
-
+    public static final int DEFAULT_PRIORITY = 1;
     private final char symbol;
     private final int priority;
 
@@ -22,17 +21,11 @@ public enum Operation {
     }
 
     public static boolean isOperation(char symbol) {
-        return Arrays.stream(values()).anyMatch(op -> op.getSymbol() == symbol);
+        return Arrays.stream(values()).anyMatch(operation -> operation.getSymbol() == symbol);
     }
     public static int getPriority(char symbol) {
-        Operation found = NULL;
-        for (Operation operation : values()) {
-            if (operation.symbol == symbol){
-                found = operation;
-                break;
-            }
-        }
-        return found.getPriority();
+        return Arrays.stream(values()).filter(operation -> operation.symbol == symbol)
+                .findFirst().map(Operation::getPriority).orElse(DEFAULT_PRIORITY);
     }
 
     public char getSymbol() {
