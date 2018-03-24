@@ -2,6 +2,7 @@ package ru.intervale.calculator.impl;
 
 import ru.intervale.calculator.MultiCalculator;
 import ru.intervale.calculator.dto.Result;
+import ru.intervale.calculator.operation.Operation;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,28 +14,11 @@ public abstract class BaseCalculator implements MultiCalculator {
         return expressions.stream().map(this::calculate).collect(Collectors.toList());
     }
 
-    protected boolean isOperation(char c) {
-        switch (c) {
-            case '-':
-            case '+':
-            case '*':
-            case '/':
-            case '^':
-            case '%':
-                return true;
-        }
-        return false;
+    protected boolean isOperation(char symbol) {
+        return Operation.isOperation(symbol);
     }
 
-    protected byte operationPrior(char op) {
-        switch (op) {
-            case '^':
-                return 3;
-            case '*':
-            case '/':
-            case '%':
-                return 2;
-        }
-        return 1;
+    protected int operationPrior(char symbol) {
+        return Operation.getPriority(symbol);
     }
 }

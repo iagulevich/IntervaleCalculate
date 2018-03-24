@@ -80,7 +80,7 @@ public class SimpleCalculator extends BaseCalculator {
     private String revPolNotation(String stringIn) {
 
         String strStack = "";
-        String strOut = "";
+        StringBuilder strOut = new StringBuilder();
         char charIn;
         boolean operation = false;
         boolean startStr = true;
@@ -92,26 +92,26 @@ public class SimpleCalculator extends BaseCalculator {
                 //проверка на унарный минус и унарный плюс
                 if (((operation && charIn == '-' && strStack.length() > 0) || (startStr)) ||
                         (operation && charIn == '+' && strStack.length() > 0) || (startStr)) {
-                    strOut += " " + charIn;
+                    strOut.append(" ").append(charIn);
                     continue;
                 }
                 operation = true;
 
-                strOut += " ";
+                strOut.append(" ");
                 strStack += charIn;
             } else {
                 if (Character.isDigit(charIn)) {
                     operation = false;
                     startStr = false;
                 }
-                strOut += charIn;
+                strOut.append(charIn);
             }
         }
         if (strStack.length() > 0) {
-            strOut += " " + strStack.charAt(strStack.length() - 1);
+            strOut.append(" ").append(strStack.charAt(strStack.length() - 1));
             strStack.substring(strStack.length() - 1);
         }
-        return strOut;
+        return strOut.toString();
     }
 
 
