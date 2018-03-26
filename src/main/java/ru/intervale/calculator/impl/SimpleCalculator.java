@@ -1,6 +1,8 @@
 package ru.intervale.calculator.impl;
 
+import ru.intervale.calculator.algorithm.ReversePolishNotation;
 import ru.intervale.calculator.dto.Result;
+import ru.intervale.calculator.operation.Operation;
 
 import java.util.Stack;
 import java.util.StringTokenizer;
@@ -13,17 +15,20 @@ public class SimpleCalculator extends BaseCalculator {
         if (expression.isEmpty()) {
             return new Result(expression, "Строка пуста!");
         }
-        String rpn = rpn(expression);
+        String rpn = new ReversePolishNotation(expression).rpn();
 
-        double d1 = 0, d2 = 0;
+        double d1, d2;
         String token;
+
         Stack<Double> stack = new Stack<>();
         StringTokenizer tokenizer = new StringTokenizer(rpn);
 
+        char symbol;
         while (tokenizer.hasMoreTokens()) {
             try {
                 token = tokenizer.nextToken().trim();
-                if (1 == token.length() && isOperation(token.charAt(0))) {
+                symbol = token.charAt(0);
+                if (1 == token.length() && isOperation(symbol)) {
                     if (stack.size() < 2) {
                         return new Result(expression, "Неверное количество данных в стеке для операции " + token);
                     }
@@ -31,26 +36,7 @@ public class SimpleCalculator extends BaseCalculator {
                     d1 = stack.pop();
                     d2 = stack.pop();
 
-                    switch (token.charAt(0)) {
-                        case '+':
-                            d1 += d2;
-                            break;
-                        case '-':
-                            d1 = d2 - d1;
-                            break;
-                        case '/':
-                            d1 = d2 / d1;
-                            break;
-                        case '*':
-                            d1 *= d2;
-                            break;
-                        case '%':
-                            d1 *= d2 / 100;
-                            break;
-                        case '^':
-                            d1 = Math.pow(d2, d1);
-                            break;
-                    }
+                    d1 = Operation.find(symbol).perform(d1, d2);
                     stack.push(d1);
                 } else {
                     d1 = Double.parseDouble(token);
