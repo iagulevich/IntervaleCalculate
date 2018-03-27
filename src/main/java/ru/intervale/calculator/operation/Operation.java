@@ -46,6 +46,10 @@ public enum Operation {
         }
     }
 
+    public static boolean isUnary(char symbol) {
+        return symbol == MINUS.symbol || symbol == PLUS.symbol;
+    }
+
     public char getSymbol() {
         return symbol;
     }

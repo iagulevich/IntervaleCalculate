@@ -12,34 +12,25 @@ public class ReversePolishNotation {
 
     public String rpn() {
 
-        StringBuilder strStack = new StringBuilder();
+        char operation = 0;
         StringBuilder result = new StringBuilder();
-        boolean operation = false;
         boolean startStr = true;
 
-        for (char symbol: input) {
-            if (Operation.isOperation(symbol)) {
-                if (((operation && symbol == '-' && strStack.length() > 0) || (startStr)) ||
-                        (operation && symbol == '+' && strStack.length() > 0) || (startStr)) {
-                    result.append(" ").append(symbol);
+        for (char symbol : input) {
+            if (Character.isDigit(symbol)) {
+                startStr = false;
+                result.append(symbol);
+            } else if (Operation.isOperation(symbol)) {
+                if ((Operation.isUnary(symbol) && operation != 0) || (startStr)) {
+                    result.append(symbol);
                     continue;
                 }
-                operation = true;
-
                 result.append(" ");
-                strStack.append(symbol);
-            } else {
-                if (Character.isDigit(symbol)) {
-                    operation = false;
-                    startStr = false;
-                }
-                result.append(symbol);
+                operation = symbol;
             }
         }
-        if (strStack.length() > 0) {
-            result.append(" ").append(strStack.charAt(strStack.length() - 1));
-            strStack.substring(strStack.length() - 1);
-        }
+        result.append(" ").append(operation);
         return result.toString();
     }
+
 }
