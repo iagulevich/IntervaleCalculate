@@ -1,5 +1,7 @@
 package ru.intervale.calculator.operation;
 
+import ru.intervale.calculator.exceptions.CalculatorException;
+
 import java.util.Arrays;
 
 public enum Operation {
@@ -7,7 +9,7 @@ public enum Operation {
     PLUS('+', 1, (t1, t2) -> t2 + t1),
     MINUS('-', 1, (t1, t2) -> t2 - t1),
     MUL('*', 2, (t1, t2) -> t2 * t1),
-    DIV('/', 2, (t1, t2) -> t2 / t1),
+    DIV('/', 2, Operation::div),
     PER('%', 2, (t1, t2) -> t1 % t2),
     POW('^', 3, (t1, t2) -> Math.pow(t2, t1));
 
@@ -24,7 +26,7 @@ public enum Operation {
 
     public static Operation find(char symbol) {
         return Arrays.stream(values()).filter(operation -> operation.symbol == symbol).findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Operation not found for: " + symbol));
+                .orElseThrow(() -> new CalculatorException("Operation not found for: " + symbol));
     }
 
     public static boolean isOperation(char symbol) {
@@ -34,6 +36,14 @@ public enum Operation {
     public static int getPriority(char symbol) {
         return Arrays.stream(values()).filter(operation -> operation.symbol == symbol)
                 .findFirst().map(Operation::getPriority).orElse(DEFAULT_PRIORITY);
+    }
+
+    private static Double div(Double t1, Double t2) {
+        if (t1 == 0) {
+            throw new CalculatorException("Divided to zero.");
+        } else {
+            return t2 / t1;
+        }
     }
 
     public char getSymbol() {
