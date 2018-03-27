@@ -6,7 +6,6 @@
 # Log file
 *.log
 *.iml
-*.xml
 
 # BlueJ files
 *.ctxt
