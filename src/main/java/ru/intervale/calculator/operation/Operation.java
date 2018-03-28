@@ -3,17 +3,20 @@ package ru.intervale.calculator.operation;
 import ru.intervale.calculator.exceptions.CalculatorException;
 
 import java.util.Arrays;
+import java.util.Stack;
 
 public enum Operation {
 
-    PLUS('+', 1, (t1, t2) -> t2 + t1),
-    MINUS('-', 1, (t1, t2) -> t2 - t1),
-    MUL('*', 2, (t1, t2) -> t2 * t1),
-    DIV('/', 2, Operation::div),
-    PER('%', 2, (t1, t2) -> t1 % t2),
-    POW('^', 3, (t1, t2) -> Math.pow(t2, t1));
+    RIGHT_BRACKET(')', 1, (t1, t2) -> t1),
+    LEFT_BRACKET('(', 1, (t1, t2) -> t1),
+    PLUS('+', 2, (t1, t2) -> t2 + t1),
+    MINUS('-', 2, (t1, t2) -> t2 - t1),
+    MUL('*', 3, (t1, t2) -> t2 * t1),
+    DIV('/', 3, Operation::div),
+    PER('%', 3, (t1, t2) -> t1 % t2),
+    POW('^', 4, (t1, t2) -> Math.pow(t2, t1));
 
-    public static final int DEFAULT_PRIORITY = 1;
+    public static final int DEFAULT_PRIORITY = 0;
     private final char symbol;
     private final int priority;
     private final OperationFunction<Double> function;
@@ -38,9 +41,13 @@ public enum Operation {
                 .findFirst().map(Operation::getPriority).orElse(DEFAULT_PRIORITY);
     }
 
+    public static int getPriority(Stack<Character> stack){
+        return stack.isEmpty() ? DEFAULT_PRIORITY : getPriority(stack.peek());
+    }
+
     private static Double div(Double t1, Double t2) {
         if (t1 == 0) {
-            throw new CalculatorException("Divided to zero.");
+            throw new CalculatorException("Division by zero");
         } else {
             return t2 / t1;
         }
@@ -48,6 +55,14 @@ public enum Operation {
 
     public static boolean isUnary(char symbol) {
         return symbol == MINUS.symbol || symbol == PLUS.symbol;
+    }
+
+    public static boolean isLeftBracket(char symbol) {
+        return LEFT_BRACKET.symbol == symbol;
+    }
+
+    public static boolean isRightBracket(char symbol) {
+        return RIGHT_BRACKET.symbol == symbol;
     }
 
     public char getSymbol() {

@@ -13,10 +13,8 @@ public class SimpleCalculator extends BaseCalculator {
     @Override
     public Result calculate(String expression) {
 
-        if (expression.isEmpty()) {
-            return new Result(expression, "Строка пуста!");
-        }
         String rpn = new ReversePolishNotation(expression).rpn();
+        System.out.println("rpn: " + rpn);
 
         double d1;
         String token;
