@@ -18,6 +18,10 @@ public abstract class BaseCalculator implements MultiCalculator {
         return Operation.isOperation(symbol);
     }
 
+    protected boolean isOperation(String token) {
+        return Operation.isOperation(token);
+    }
+
     protected int operationPrior(char symbol) {
         return Operation.getPriority(symbol);
     }

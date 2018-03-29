@@ -13,37 +13,30 @@ public class SimpleCalculator extends BaseCalculator {
     @Override
     public Result calculate(String expression) {
 
-        String rpn = new ReversePolishNotation(expression).rpn();
-        System.out.println("rpn: " + rpn);
-
-        double d1;
-        String token;
-
         Stack<Double> stack = new Stack<>();
-        StringTokenizer tokenizer = new StringTokenizer(rpn);
 
-        char symbol;
         try {
+            String rpn = new ReversePolishNotation(expression).rpn();
+            System.out.println("rpn: " + rpn);
+
+            double d1;
+
+            StringTokenizer tokenizer = new StringTokenizer(rpn);
+
+            String token;
+
             while (tokenizer.hasMoreTokens()) {
                 token = tokenizer.nextToken().trim();
-                symbol = token.charAt(0);
-                if (1 == token.length() && isOperation(symbol)) {
-                    if (stack.size() < 2) {
-                        throw new CalculatorException("Неверное количество данных в стеке для операции " + token);
-                    }
-                    d1 = Operation.find(symbol).perform(stack.pop(), stack.pop());
-                } else {
-                    d1 = Double.parseDouble(token);
-                }
+                d1 = isOperation(token) ? Operation.find(token.charAt(0)).perform(stack.pop(), stack.pop()) : Double.parseDouble(token);
                 stack.push(d1);
+            }
+            if (stack.size() > 1) {
+                throw new CalculatorException("Количество операторов не соответствует количеству операндов.");
             }
         } catch (CalculatorException e) {
             return new Result(expression, e.getMessage());
-        } catch (Exception e) {
-            return new Result(expression, "Недопустимый символ в выражении!");
         }
-
-        return stack.size() > 1 ? new Result(expression, "Количество операторов не соответствует количеству операндов!") : new Result(expression, stack.pop());
+        return new Result(expression, stack.pop());
     }
 
 }

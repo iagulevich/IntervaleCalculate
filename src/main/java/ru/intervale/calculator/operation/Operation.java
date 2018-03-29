@@ -36,12 +36,16 @@ public enum Operation {
         return Arrays.stream(values()).anyMatch(operation -> operation.getSymbol() == symbol);
     }
 
+    public static boolean isOperation(String token) {
+        return token.length() == 1 && isOperation(token.charAt(0));
+    }
+
     public static int getPriority(char symbol) {
         return Arrays.stream(values()).filter(operation -> operation.symbol == symbol)
                 .findFirst().map(Operation::getPriority).orElse(DEFAULT_PRIORITY);
     }
 
-    public static int getPriority(Stack<Character> stack){
+    public static int getPriority(Stack<Character> stack) {
         return stack.isEmpty() ? DEFAULT_PRIORITY : getPriority(stack.peek());
     }
 
@@ -55,6 +59,10 @@ public enum Operation {
 
     public static boolean isUnary(char symbol) {
         return symbol == MINUS.symbol || symbol == PLUS.symbol;
+    }
+
+    public static boolean isBracket(char symbol) {
+        return isLeftBracket(symbol) || isRightBracket(symbol);
     }
 
     public static boolean isLeftBracket(char symbol) {

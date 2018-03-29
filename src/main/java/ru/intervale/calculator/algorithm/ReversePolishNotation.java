@@ -24,7 +24,7 @@ public class ReversePolishNotation {
             if (Character.isWhitespace(symbol)) {
                 continue;
             }
-            if (Character.isDigit(symbol)) {
+            if (Character.isDigit(symbol) || symbol == '.') {
                 result.append(symbol);
                 hasOperation = false;
                 continue;
@@ -44,7 +44,7 @@ public class ReversePolishNotation {
                     } else {
                         char c;
                         while ((c = operations.pop()) != Operation.LEFT_BRACKET.getSymbol() && bracketCount > 0) {
-                            result.append(c);
+                            result.append(c).append(' ');
                         }
                     }
                     bracketCount--;
@@ -67,7 +67,16 @@ public class ReversePolishNotation {
                 throw new CalculatorException("Не правильный символ в строке");
             }
         }
-        result.append(' ').append(operations.pop());
+        while (!operations.isEmpty()) {
+            if (!Character.isWhitespace(result.charAt(result.length() - 1))) {
+                result.append(' ');
+            }
+            final Character ch = operations.pop();
+            if (Operation.isBracket(ch)) {
+                throw new CalculatorException("Лишняя скобка[" + ch + "]");
+            }
+            result.append(ch);
+        }
         return result.toString();
     }
 
@@ -77,8 +86,8 @@ public class ReversePolishNotation {
             throw new CalculatorException("Строка пуста!");
         }
         final char firstSymbol = input.charAt(0);
-        if ((!Character.isDigit(firstSymbol)) && firstSymbol != Operation.LEFT_BRACKET.getSymbol()) {
-            throw new CalculatorException("Неверный первый символ: " + firstSymbol);
+        if ((!Character.isDigit(firstSymbol)) && firstSymbol != Operation.LEFT_BRACKET.getSymbol() && !Character.isWhitespace(firstSymbol)) {
+            throw new CalculatorException("Неверный первый символ:[" + firstSymbol + "]");
         }
     }
 

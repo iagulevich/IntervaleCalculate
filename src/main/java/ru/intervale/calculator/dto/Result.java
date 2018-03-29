@@ -40,11 +40,7 @@ public class Result {
         Locale locale = new Locale("en", "UK");
         DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(locale);
         String formatDouble;
-        if (result.doubleValue() % 1 == 0) {
-            formatDouble = "##0";
-        } else {
-            formatDouble = "##0.00000";
-        }
+        formatDouble = result.doubleValue() % 1 == 0 ? "##0" : "##0.00000";
         DecimalFormat decimalFormat = new DecimalFormat(formatDouble, decimalFormatSymbols);
         return decimalFormat.format(result);
     }
