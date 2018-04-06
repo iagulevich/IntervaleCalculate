@@ -1,6 +1,6 @@
 package ru.intervale.calculator.algorithm;
 
-import ru.intervale.calculator.exceptions.CalculatorException;
+import ru.intervale.calculator.CalculatorException;
 import ru.intervale.calculator.operation.Operation;
 
 import java.util.Stack;

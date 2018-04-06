@@ -1,4 +1,4 @@
-package ru.intervale.calculator.exceptions;
+package ru.intervale.calculator;
 
 public class CalculatorException extends RuntimeException {
 

@@ -2,7 +2,7 @@ package ru.intervale.calculator.impl;
 
 import ru.intervale.calculator.algorithm.ReversePolishNotation;
 import ru.intervale.calculator.dto.Result;
-import ru.intervale.calculator.exceptions.CalculatorException;
+import ru.intervale.calculator.CalculatorException;
 import ru.intervale.calculator.operation.Operation;
 
 import java.util.Stack;
@@ -20,6 +20,8 @@ public class SimpleCalculator extends BaseCalculator {
             System.out.println("rpn: " + rpn);
 
             double d1;
+            double pop1;
+            double pop2;
 
             StringTokenizer tokenizer = new StringTokenizer(rpn);
 
@@ -27,7 +29,9 @@ public class SimpleCalculator extends BaseCalculator {
 
             while (tokenizer.hasMoreTokens()) {
                 token = tokenizer.nextToken().trim();
-                d1 = isOperation(token) ? Operation.find(token.charAt(0)).perform(stack.pop(), stack.pop()) : Double.parseDouble(token);
+                pop1 = stack.pop();
+                pop2 = stack.pop();
+                d1 = isOperation(token) ? Operation.find(token.charAt(0)).perform(pop2, pop1) : Double.parseDouble(token);
                 stack.push(d1);
             }
             if (stack.size() > 1) {

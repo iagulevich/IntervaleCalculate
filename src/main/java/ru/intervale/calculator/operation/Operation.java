@@ -1,7 +1,5 @@
 package ru.intervale.calculator.operation;
 
-import ru.intervale.calculator.exceptions.CalculatorException;
-
 import java.util.Arrays;
 import java.util.Stack;
 
@@ -9,12 +7,12 @@ public enum Operation {
 
     RIGHT_BRACKET(')', 1, (t1, t2) -> t1),
     LEFT_BRACKET('(', 1, (t1, t2) -> t1),
-    PLUS('+', 2, (t1, t2) -> t2 + t1),
-    MINUS('-', 2, (t1, t2) -> t2 - t1),
-    MUL('*', 3, (t1, t2) -> t2 * t1),
+    PLUS('+', 2, (t1, t2) -> t1 + t2),
+    MINUS('-', 2, (t1, t2) -> t1 - t2),
+    MUL('*', 3, (t1, t2) -> t1 * t2),
     DIV('/', 3, Operation::div),
     PER('%', 3, (t1, t2) -> t1 % t2),
-    POW('^', 4, (t1, t2) -> Math.pow(t2, t1));
+    POW('^', 4, Math::pow);
 
     public static final int DEFAULT_PRIORITY = 0;
     private final char symbol;
@@ -29,7 +27,7 @@ public enum Operation {
 
     public static Operation find(char symbol) {
         return Arrays.stream(values()).filter(operation -> operation.symbol == symbol).findFirst()
-                .orElseThrow(() -> new CalculatorException("Operation not found for: " + symbol));
+                .orElseThrow(() -> new OperationNotFound(symbol));
     }
 
     public static boolean isOperation(char symbol) {
@@ -50,10 +48,10 @@ public enum Operation {
     }
 
     private static Double div(Double t1, Double t2) {
-        if (t1 == 0) {
-            throw new CalculatorException("Division by zero");
+        if (t2 == 0) {
+            throw new DivisionByZero();
         } else {
-            return t2 / t1;
+            return t1 / t2;
         }
     }
 
