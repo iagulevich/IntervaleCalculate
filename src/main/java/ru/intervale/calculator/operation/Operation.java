@@ -5,13 +5,13 @@ import java.util.Stack;
 
 public enum Operation {
 
-    RIGHT_BRACKET(')', 1, (t1, t2) -> t1),
-    LEFT_BRACKET('(', 1, (t1, t2) -> t1),
+    RIGHT_BRACKET(')', 1, Operation::unrealized),
+    LEFT_BRACKET('(', 1, Operation::unrealized),
     PLUS('+', 2, (t1, t2) -> t1 + t2),
     MINUS('-', 2, (t1, t2) -> t1 - t2),
     MUL('*', 3, (t1, t2) -> t1 * t2),
     DIV('/', 3, Operation::div),
-    PER('%', 3, (t1, t2) -> t1 % t2),
+    PER('%', 3, (t1, t2) -> (t1 * t2) / 100),
     POW('^', 4, Math::pow);
 
     public static final int DEFAULT_PRIORITY = 0;
@@ -69,6 +69,10 @@ public enum Operation {
 
     public static boolean isRightBracket(char symbol) {
         return RIGHT_BRACKET.symbol == symbol;
+    }
+
+    private static Double unrealized(Double t1, Double t2) {
+        throw new OperationUnrealized();
     }
 
     public char getSymbol() {

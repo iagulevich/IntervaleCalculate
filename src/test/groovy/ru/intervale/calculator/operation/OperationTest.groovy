@@ -68,8 +68,8 @@ class OperationTest extends Specification {
         expect:
         Operation.getPriority(stack as Stack) == priority
         where:
-        stack             || priority
-        new Stack<>()     || Operation.DEFAULT_PRIORITY
+        stack         || priority
+        new Stack<>() || Operation.DEFAULT_PRIORITY
     }
 
     def "Operation is unary"() {
@@ -128,17 +128,86 @@ class OperationTest extends Specification {
 
     def "Perform operation plus"() {
         expect:
-        Operation.PLUS.perform(2,3) == 5
-        Operation.PLUS.perform(2,-3) == -1
-        Operation.PLUS.perform(2.00,-13) == -11
-        Operation.PLUS.perform(2.001,1.4) == 3.401
+        Operation.PLUS.perform(d1 as double, d2 as double) == result
+        where:
+        d1     | d2  || result
+        2      | 3   || 5
+        2      | -3  || -1
+        2.00   | -13 || -11
+        2.0001 | 1.4 || 3.4001
     }
 
     def "Perform operation minus"() {
         expect:
-        Operation.MINUS.perform(2,3) == -1
-        Operation.MINUS.perform(2,-3) == 5
-        Operation.MINUS.perform(2.00,-13) == 15
-        Operation.MINUS.perform(2.001,1.4) == 0.601
+        Operation.MINUS.perform(d1 as double, d2 as double) == result
+        where:
+        d1   | d2  || result
+        2    | 3   || -1
+        2    | -3  || 5
+        2.00 | -13 || 15
+    }
+
+    def "Perform operation division"() {
+        expect:
+        Operation.DIV.perform(d1 as Double, d2) == result
+        where:
+        d1   | d2  || result
+        2    | 3   || 0.6666666666666666
+        2    | -3  || -0.6666666666666666
+        2.00 | -13 || -0.15384615384615385
+    }
+
+    def "Division by zero"() {
+        when:
+        Operation.DIV.perform(1, 0)
+        then:
+        DivisionByZero ex = thrown()
+        ex.message == "Division by zero"
+    }
+
+    def "Perform operation multiply"() {
+        expect:
+        Operation.MUL.perform(d1 as Double, d2) == result
+        where:
+        d1   | d2  || result
+        2    | 3   || 6
+        2    | -3  || -6
+        2.00 | -13 || -26
+    }
+
+    def "Perform operation percent"() {
+        expect:
+        Operation.PER.perform(d1 as Double, d2) == result
+        where:
+        d1  | d2 || result
+        100 | 10 || 10
+        200 | 20 || 40
+        200 | 50 || 100
+    }
+
+    def "Perform operation power"() {
+        expect:
+        Operation.POW.perform(d1 as Double, d2) == result
+        where:
+        d1 | d2 || result
+        10 | 2  || 100
+        2  | 10 || 1024
+        3  | 4  || 81
+    }
+
+    def "Perform operation left bracket"(){
+        when:
+        Operation.LEFT_BRACKET.perform(1, 1)
+        then:
+        OperationUnrealized ex = thrown()
+        ex.message == "Operation unrealized"
+    }
+
+    def "Perform operation right bracket"(){
+        when:
+        Operation.RIGHT_BRACKET.perform(1, 1)
+        then:
+        OperationUnrealized ex = thrown()
+        ex.message == "Operation unrealized"
     }
 }
